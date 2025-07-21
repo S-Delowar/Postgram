@@ -9,7 +9,7 @@ class PostManager(AbstractManager):
 
 
 class Post(AbstractModel):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
     body = models.TextField()
     edited = models.BooleanField(default=False)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)

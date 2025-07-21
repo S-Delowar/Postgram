@@ -41,6 +41,8 @@ class UserManager(BaseUserManager, AbstractManager):
         return user
 
 
+def user_avatar_path(instance, filename):
+    return f"avatar/user_{instance.username}/{filename}"
 
 class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
     username = models.CharField(db_index=True, max_length=255, unique=True)
@@ -49,6 +51,9 @@ class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True)
     is_active=models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    
+    avatar = models.ImageField(upload_to=user_avatar_path, blank=True, null=True, default="avatar/default_avatar.png")
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

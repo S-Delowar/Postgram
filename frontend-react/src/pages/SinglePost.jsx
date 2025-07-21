@@ -8,6 +8,8 @@ import { Col, Image, Row } from "react-bootstrap";
 import CreateComment from "../components/comments/CreateComment";
 import Comment from "../components/comments/Comment";
 import { randomAvatar } from "../helper/utils";
+import { getUser } from "../hooks/user.actions";
+import { getAvatarURL } from "../helper/avatar";
 
 const SinglePost = () => {
   const { postId } = useParams();
@@ -20,9 +22,19 @@ const SinglePost = () => {
     fetcher
   );
 
+  const { data: loggedInUser } = useSWR("/user/me/", fetcher);
+
+
   console.log("post:", post);
   console.log("comments: ", comments);
+  console.log("Single post logged user: ",loggedInUser)
 
+  if (!loggedInUser) {
+    return (
+      <div>Loading</div>
+    )
+  }
+  
   return (
     <>
       <Layout>
@@ -32,7 +44,7 @@ const SinglePost = () => {
               <Post post={post} refresh={mutatePost} isSinglePost></Post>
               <div className="d-flex align-items-center">
                 <Image
-                  src={randomAvatar()}
+                  src={getAvatarURL(loggedInUser.avatar) || randomAvatar()}
                   width={48}
                   height={48}
                   roundedCircle
@@ -43,7 +55,7 @@ const SinglePost = () => {
                   refresh={mutateComments}
                 ></CreateComment>
               </div>
-              
+
               {comments?.map((c) => (
                 <Comment key={c.id} comment={c} refresh={mutateComments} />
               ))}

@@ -1,41 +1,46 @@
-import React, { useState } from "react";
-import { Context } from "../App";
+import React from "react";
 import LogoutButton from "../buttons/LogoutButton";
 import NavigationBar from "../components/NavigationBar";
 import Layout from "../components/Layout";
 import CreatePost from "../components/post/CreatePost";
-import { Col, Image, Row } from "react-bootstrap";
+import { Col, Image, Row, Spinner } from "react-bootstrap";
 import { randomAvatar } from "../helper/utils";
 import { getUser } from "../hooks/user.actions";
 import useSWR from "swr";
 import { fetcher } from "../helper/axios";
 import Post from "../components/post/Post";
 import Toaster from "../components/Toaster";
+import ProfileCard from "../components/profile/ProfileCard";
+import { getAvatarURL } from "../helper/avatar";
+import { useLoggedInUserSWR } from "../helper/getUser";
 
 const Home = () => {
-    // Toast
-  // const [toast, setToast] = useState({ show: false, message: "", type: "" });
-
-  const {
-    data: posts,
-    error,
-    isLoading,
-    mutate,
-  } = useSWR("/post/", fetcher, {
+  const { data: posts, mutate } = useSWR("/post/", fetcher, {
     refreshInterval: 10000,
   });
+
+  const profiles = useSWR("/user/?limit=5", fetcher);
+
   console.log(posts);
+  console.log("featured profiles: ", profiles.data?.results);
 
-  const user = getUser();
+  const { loggedInUser, isLoading, isError} = useLoggedInUserSWR();
 
-  if (!user) {
-    return <div>Loading!</div>;
+
+  if (isLoading) {
+    return (
+      <>
+      <div>Loading!</div>
+      <Spinner></Spinner></>
+    );
   }
-
-//   Handle toast state
-  // const showToast = (message, type = "success") => {
-  //   setToast({ show: true, message, type });
-  // };
+  if (isError){
+    return (
+      <>
+      <h5>Error! Page not Loading.</h5>
+      </>
+    )
+  }
 
   return (
     <div>
@@ -45,7 +50,7 @@ const Home = () => {
             <Row className="align-items-center border rounded">
               <Col className="flex-shrink-1">
                 <Image
-                  src={randomAvatar()}
+                  src={getAvatarURL(loggedInUser.avatar) || randomAvatar()}
                   roundedCircle
                   width={52}
                   height={52}
@@ -53,7 +58,7 @@ const Home = () => {
                 />
               </Col>
               <Col sm={10} className="flex-grow-1">
-                <CreatePost refresh={mutate}/>
+                <CreatePost refresh={mutate} />
               </Col>
             </Row>
             <Row>
@@ -62,17 +67,20 @@ const Home = () => {
               ))}
             </Row>
           </Col>
-          <Col>
-            <p>Profiles</p>
+          <Col
+            sm={3}
+            className="border rounded py-4
+           h-50"
+          >
+            <h4 className="font-weight-bold text-center">Suggested people</h4>
+            {profiles?.data?.results?.map(
+              (profileUser) =>
+                profileUser.username !== loggedInUser.username && (
+                  <ProfileCard key={profileUser.id} profileUser={profileUser} />
+                )
+            )}
           </Col>
         </Row>
-        {/* <Toaster
-          title="Success!"
-          message={toast.message}
-          type={toast.type}
-          showToast={toast.show}
-          onClose={() => setToast({ ...toast, show: false })}
-        /> */}
       </Layout>
     </div>
   );

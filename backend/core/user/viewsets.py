@@ -1,16 +1,25 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 
 from core.abstract.viewsets import AbstractViewSet
 from core.user.models import User
 from core.user.permissions import IsOwnerOrSuperuser
 from core.user.serializers import UserSerializer
+from rest_framework.response import Response
+
 
 
 class UserViewSet(AbstractViewSet):
     http_method_names = ('patch', 'get')
-    permission_classes = (IsAuthenticated, IsOwnerOrSuperuser)
+    # permission_classes = (IsAuthenticated, IsOwnerOrSuperuser)
     serializer_class = UserSerializer
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), IsOwnerOrSuperuser()]
+        
     
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -22,3 +31,8 @@ class UserViewSet(AbstractViewSet):
         self.check_object_permissions(self.request, obj)
         
         return obj
+    
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)

@@ -1,32 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { getUser } from "../../hooks/user.actions";
 import axiosService from "../../helper/axios";
-import Toaster from "../Toaster";
 import { Context } from "../Layout";
+import { CommentOutlined } from "@ant-design/icons";
 import { useLoggedInUserSWR } from "../../helper/getUser";
 
-const CreatePost = (props) => {
-  const { refresh } = props
+const CommentButton = (props) => {
+  const { post, refresh } = props;
 
-  const [show, setShow] = useState(false);
-  const [form, setForm] = useState({ body: "", author: "" });
   const [validated, setValidated] = useState(false);
-
+  const [form, setForm] = useState({ body: "", post: "", author: "" });
+  const [show, setShow] = useState(false);
   const { setToaster } = useContext(Context);
 
+  const { loggedInUser, isLoading, isError } = useLoggedInUserSWR();
 
- const { loggedInUser } = useLoggedInUserSWR();
-
-  //Show Modal
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const createPostForm = event.currentTarget;
+    const createCommentForm = event.currentTarget;
 
-    if (createPostForm.checkValidity() == false) {
+    if (createCommentForm.checkValidity() == false) {
       event.stopPropagation();
     }
     setValidated(true);
@@ -37,36 +33,65 @@ const CreatePost = (props) => {
     };
 
     axiosService
-      .post("/post/", data)
+      .post(`/post/${post.id}/comment/`, data)
       .then(() => {
         handleClose();
         setForm({ body: "", author: "" });
-        // toast
-        setToaster({show: true, type: "success", title: "Success", message: "Post created!"})
+        // toaster
+        setToaster({
+          show: true,
+          type: "success",
+          title: "Success",
+          message: "Comment created!",
+        });
         refresh();
-        console.log("Post creation successful")
+        console.log("Comment created");
       })
       .catch((error) => {
         console.log(error);
-        setToaster({show: true, type: "danger", title: "Error", message: "Failed to create post."})
+        setToaster({
+          show: true,
+          type: "danger",
+          title: "Error",
+          message: "Failed to create comment.",
+        });
       });
   };
 
+
+  if (isLoading) {
+    return (
+       <>
+       <p>Loading comment form</p>
+       <Spinner></Spinner>
+       </>
+    );
+  }
+
+  if (isError) {
+    return (
+      <>
+      <p>Error! Something is happened.</p>
+      </>
+    )
+  }
+
   return (
-    <div>
-      <Form.Group className="my-3 w-75">
-        <Form.Control
-          className="py-2 rounded-pill border-primary text-primary"
-          type="text"
-          placeholder="Write a post"
-          onClick={handleShow}
-        />
-      </Form.Group>
+    <>
+      <Button
+        variant="outline-primary"
+        size="sm"
+        className="me-2 pr-2 pl-2 pt-0 pb-0"
+        onClick={handleShow}
+      >
+        <CommentOutlined style={{ paddingRight: "2px" }} />
+        <small>Comment</small>
+      </Button>
 
       {/* Modal */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Create Post</Modal.Title>
+          <Modal.Title>Write a comment</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -92,8 +117,8 @@ const CreatePost = (props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 
-export default CreatePost;
+export default CommentButton;

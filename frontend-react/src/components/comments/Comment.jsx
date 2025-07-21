@@ -2,15 +2,17 @@ import { MoreOutlined } from "@ant-design/icons";
 import React, { useContext } from "react";
 import { Card, Dropdown, Image } from "react-bootstrap";
 import { format } from "timeago.js";
-import { getUser } from "../../hooks/user.actions";
 import { randomAvatar } from "../../helper/utils";
-import axiosService from "../../helper/axios";
+import axiosService, { fetcher } from "../../helper/axios";
 import { Context } from "../Layout";
 import UpdateComment from "./UpdateComment";
+import useSWR from "swr";
 
 const Comment = (props) => {
   const { comment, refresh } = props;
-  const user = getUser();
+
+  const { data: commentUser } = useSWR(`/user/${comment.author}/`, fetcher);
+const { data: loggedInUser } = useSWR("/user/me/", fetcher);
 
   const { setToaster } = useContext(Context);
 
@@ -22,6 +24,11 @@ const Comment = (props) => {
     })
   }
 
+  if (!commentUser){
+    return (
+      <div>Loading</div>
+    )
+  }
   return (
     <div>
       <Card className="my-4 shadow-sm rounded-3">
@@ -30,7 +37,7 @@ const Comment = (props) => {
           <div className="d-flex justify-content-between align-items-start mb-3">
             <div className="d-flex align-items-center">
               <Image
-                src={randomAvatar()}
+                src={commentUser.avatar || randomAvatar()}
                 width={48}
                 height={48}
                 roundedCircle
@@ -42,7 +49,7 @@ const Comment = (props) => {
               </div>
             </div>
 
-            {user.username == comment.author_username && (
+            {loggedInUser.username == comment.author_username && (
               <Dropdown align="end">
                 <Dropdown.Toggle variant="link" bsPrefix="p-0 border-0 btn">
                   <MoreOutlined style={{ fontSize: "20px" }} />

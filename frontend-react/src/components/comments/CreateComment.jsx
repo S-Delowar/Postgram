@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { getUser } from "../../hooks/user.actions";
 import axiosService from "../../helper/axios";
 import { Context } from "../Layout";
+import { useLoggedInUserSWR } from "../../helper/getUser";
 
 const CreateComment = (props) => {
-    const { post, refresh } = props
+  const { post, refresh } = props;
 
   const [validated, setValidated] = useState(false);
   const [form, setForm] = useState({ body: "", post: "", author: "" });
   const [show, setShow] = useState(false);
   const { setToaster } = useContext(Context);
 
-  const user = getUser();
+  const { loggedInUser, isLoading } = useLoggedInUserSWR();
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -27,7 +27,7 @@ const CreateComment = (props) => {
     setValidated(true);
 
     const data = {
-      author: user.id,
+      author: loggedInUser.id,
       body: form.body,
     };
 
@@ -37,19 +37,36 @@ const CreateComment = (props) => {
         handleClose();
         setForm({ body: "", author: "" });
         // toaster
-        setToaster({ show: true, type: "success", title: "Success", message: "Comment created!"})
+        setToaster({
+          show: true,
+          type: "success",
+          title: "Success",
+          message: "Comment created!",
+        });
         refresh();
-        console.log("Comment created")
+        console.log("Comment created");
       })
       .catch((error) => {
         console.log(error);
-        setToaster({ show: true, type: "danger", title: "Error", message: "Failed to create comment."})
+        setToaster({
+          show: true,
+          type: "danger",
+          title: "Error",
+          message: "Failed to create comment.",
+        });
       });
-
   };
-    
 
-
+  
+  if (isLoading) {
+    return (
+      <>
+      <p>
+        Loading
+        </p>
+        </>
+    )
+  }
 
   return (
     <>

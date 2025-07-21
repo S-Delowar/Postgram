@@ -9,19 +9,20 @@ import {
   MoreOutlined,
 } from "@ant-design/icons";
 import axiosService from "../../helper/axios";
-import { getUser } from "../../hooks/user.actions";
 import UpdatePost from "./UpdatePost";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../Layout";
+import CommentButton from "../comments/CommentButton";
+import { useLoggedInUserSWR } from "../../helper/getUser";
 
 
 const Post = (props) => {
-  const { post, refresh, isSinglePost } = props;
+  const { post, refresh, isSinglePost, onProfileDetailsPage } = props;
 
   const { setToaster } = useContext(Context);
 
-  const user = getUser();
+  const { loggedInUser, isLoading, isError } = useLoggedInUserSWR();
 
   const handleDelete = () => {
     axiosService
@@ -48,6 +49,25 @@ const Post = (props) => {
       });
   };
 
+console.log("post author avatar in post component: ", post.author.avatar)
+
+if (isLoading) {
+    return (
+       <>
+       <p>Loading profile...</p>
+       <Spinner></Spinner>
+       </>
+    );
+  }
+
+  if (isError) {
+    return (
+      <>
+      <p>Error! Profile not loaded.</p>
+      </>
+    )
+  }
+
   return (
     <>
       <Card className="my-4 shadow-sm rounded-3">
@@ -56,19 +76,25 @@ const Post = (props) => {
           <div className="d-flex justify-content-between align-items-start mb-3">
             <div className="d-flex align-items-center">
               <Image
-                src={randomAvatar()}
+                src={post.author.avatar || randomAvatar()}
                 width={48}
                 height={48}
                 roundedCircle
                 className="me-3"
               />
               <div>
-                <h6 className="mb-0">{post.author.username}</h6>
+                  {
+                    !onProfileDetailsPage &&
+                  <Link to={`/user/${post.author.id}/`}><h6 className="mb-0">{post.author.username}</h6></Link>                
+                  }
+                  {
+                    onProfileDetailsPage && <h6 className="mb-0">{post.author.username}</h6>
+                  }
                 <small className="text-muted">{format(post.created)}</small>
               </div>
             </div>
 
-            {user.username == post.author.username && (
+            {loggedInUser.username == post.author.username && (
               <Dropdown align="end">
                 <Dropdown.Toggle variant="link" bsPrefix="p-0 border-0 btn">
                   <MoreOutlined style={{ fontSize: "20px" }} />
@@ -145,14 +171,7 @@ const Post = (props) => {
           </div>
           <div>
             {!isSinglePost && (
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="me-2 pr-2 pl-2 pt-0 pb-0"
-              >
-                <CommentOutlined style={{ paddingRight: "2px" }} /> 
-                 <small>Comment</small>
-              </Button>
+              <CommentButton post={post} refresh={refresh} />
             )}
           </div>
         </Card.Footer>

@@ -71,8 +71,13 @@ class PostViewSet(AbstractViewSet):
         """
         post = self.get_object()
         comments = post.comments.all().order_by('-created')
-        serializer = CommentSerializer(comments, many=True)
-        
+        serializer = CommentSerializer(comments, many=True)       
+        return Response(serializer.data)
+    
+    @action(detail=False, url_path='by-author/(?P<user_id>[^/.]+)')
+    def by_author(self, request, user_id=None):
+        posts = self.get_queryset().filter(author__public_id=user_id)
+        serializer = self.get_serializer(posts, many=True)
         return Response(serializer.data)
     
     

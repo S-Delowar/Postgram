@@ -6,17 +6,14 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import NavigationBar from "./components/NavigationBar";
 import SinglePost from "./pages/SinglePost";
+import ProfileDetails from "./components/profile/ProfileDetails";
+import UpdateProfile from "./pages/UpdateProfile";
 
-export const Context = React.createContext();
 
 function App() {
-  const data = {
-    message: "Hello, World!",
-  };
 
   return (
     <>
-      <Context.Provider value={data}>
         <Routes>
           <Route
             path="/"
@@ -34,12 +31,28 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/user/:userId/"
+            element={
+              <ProtectedRoute>
+                <ProfileDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/:userId/profile/update/"
+            element={
+              <ProtectedRoute>
+                <UpdateProfile />
+              </ProtectedRoute>
+            }
+          />
+
 
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/nav" element={<NavigationBar />} />
         </Routes>
-      </Context.Provider>
     </>
   );
 }

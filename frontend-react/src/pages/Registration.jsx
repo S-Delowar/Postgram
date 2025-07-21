@@ -1,10 +1,12 @@
-import React from 'react';
-import RegistrationForm from '../forms/RegistrationForm';
-import { Link } from 'react-router-dom';
+import React from "react";
+import RegistrationForm from "../forms/RegistrationForm";
+import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 const Registration = () => {
-    return (
-        <div> <div className="container">
+  return (
+    <>
+      <div className="container">
         <div className="row">
           <div className="col-md-6 d-flex align-items center">
             <div className="content text-center px-4">
@@ -23,8 +25,8 @@ const Registration = () => {
           </div>
         </div>
       </div>
-        </div>
-    );
+    </>
+  );
 };
 
 export default Registration;

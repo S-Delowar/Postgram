@@ -1,11 +1,11 @@
 import React from "react";
-import { Context } from "../App";
 import LoginForm from "../forms/LoginForm";
 import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 const Login = () => {
   return (
-    <div>
+    <>
       <div className="container">
         <div className="row">
           <div className="col-md-6 d-flex align-items center">
@@ -25,7 +25,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
