@@ -1,0 +1,41 @@
+[33mcommit fb3325d1f6f00f2b5db201e40eba85145ec6632d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Fri Jul 25 23:15:49 2025 +0600
+
+    s3 for static and media files
+
+[33mcommit 32db0b5d5958a13c780848a5b4cf8da59561d078[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Fri Jul 25 23:12:25 2025 +0600
+
+    s3 for static and media files
+
+[33mcommit 1cb3b4b9ef06e1e9521513812b0552cb181d2bac[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Fri Jul 25 23:11:26 2025 +0600
+
+    s3 for static and media files
+
+[33mcommit a9e311793a54629fc3b1bb2eab74f87cafc7274c[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Fri Jul 25 14:58:09 2025 +0600
+
+    frontend tests
+
+[33mcommit 8a06e9fe5abb263440b0c137c78f5a8ad4b95119[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Mon Jul 21 09:10:17 2025 +0600
+
+    frontend completed
+
+[33mcommit 39941b6f807a1802880dc9c5e794d5f454bc813c[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Fri Jul 18 19:22:16 2025 +0600
+
+    home post comment frontend
+
+[33mcommit 12e7c8098c4b48d349cc37d7892e9af47aa150d4[m
+Author: S-Delowar <sayed.buet97@gmail.com>
+Date:   Sun Jul 13 20:11:03 2025 +0600
+
+    auth, user, post done with tests
