@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import axiosService from "../helper/axios";
 import { useNavigate } from "react-router-dom";
+import axiosService from "../../helper/axios";
 
 const RegistrationForm = () => {
   const [validated, setValidated] = useState(false);
@@ -14,7 +14,7 @@ const RegistrationForm = () => {
     avatar: null,
   });
   const [error, setError] = useState(null);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,25 +34,30 @@ const RegistrationForm = () => {
       avatar: form.avatar,
     };
 
-    axiosService.post("/auth/register/", data, {
+    axiosService
+      .post("/auth/register/", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-    .then((res) =>{
-        console.log('success', res)
-        localStorage.setItem("auth", JSON.stringify({
+      .then((res) => {
+        console.log("success", res);
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
             access: res.data.access,
             refresh: res.data.refresh,
             user: res.data.user,
-        }));
+          })
+        );
         navigate("/");
-    }).catch((err) => {
-      if (err.message) {
-        console.log("Error occurs", error);
-        setError(err.request.response);
-      }
-    });
+      })
+      .catch((err) => {
+        if (err.message) {
+          console.log("Error occurs", error);
+          setError(err.request.response);
+        }
+      });
   };
 
   return (
@@ -64,6 +69,7 @@ const RegistrationForm = () => {
         noValidate
         validated={validated}
         onSubmit={handleSubmit}
+        data-testid="registration-form"
       >
         <Form.Group className="mb-3">
           <Form.Label>First Name</Form.Label>
@@ -73,6 +79,7 @@ const RegistrationForm = () => {
             required
             type="text"
             placeholder="Enter first name"
+            data-testid="firstName-field"
           />
           <Form.Control.Feedback type="invalid">
             This field is required
@@ -86,6 +93,7 @@ const RegistrationForm = () => {
             required
             type="text"
             placeholder="Enter last name"
+            data-testid="lastName-field"
           />
           <Form.Control.Feedback type="invalid">
             This field is required
@@ -99,6 +107,7 @@ const RegistrationForm = () => {
             required
             type="text"
             placeholder="Enter username"
+            data-testid="username-field"
           />
           <Form.Control.Feedback type="invalid">
             This field is required
@@ -112,6 +121,7 @@ const RegistrationForm = () => {
             required
             type="email"
             placeholder="Enter email"
+            data-testid="email-field"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid email
@@ -123,6 +133,7 @@ const RegistrationForm = () => {
             type="file"
             accept="image/*"
             onChange={(e) => setForm({ ...form, avatar: e.target.files[0] })}
+            data-testid="avatar-field"
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -134,6 +145,7 @@ const RegistrationForm = () => {
             required
             type="password"
             placeholder="Password"
+            data-testid="password-field"
           />
           <Form.Control.Feedback type="invalid">
             Please provide a valid Password

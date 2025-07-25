@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Image } from "react-bootstrap";
+import { Button, Card, Dropdown, Image, Spinner } from "react-bootstrap";
 import { randomAvatar } from "../../helper/utils";
 import { format } from "timeago.js";
 import {
@@ -55,7 +55,7 @@ if (isLoading) {
     return (
        <>
        <p>Loading profile...</p>
-       <Spinner></Spinner>
+       <Spinner />
        </>
     );
   }
@@ -70,7 +70,7 @@ if (isLoading) {
 
   return (
     <>
-      <Card className="my-4 shadow-sm rounded-3">
+      <Card className="my-4 shadow-sm rounded-3" data-testid="post-test">
         <Card.Body>
           {/* Post Header */}
           <div className="d-flex justify-content-between align-items-start mb-3">

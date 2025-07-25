@@ -7,7 +7,7 @@ import { Context } from "../Layout";
 import { useLoggedInUserSWR } from "../../helper/getUser";
 
 const CreatePost = (props) => {
-  const { refresh } = props
+  const { refresh } = props;
 
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({ body: "", author: "" });
@@ -15,8 +15,7 @@ const CreatePost = (props) => {
 
   const { setToaster } = useContext(Context);
 
-
- const { loggedInUser } = useLoggedInUserSWR();
+  const { loggedInUser } = useLoggedInUserSWR();
 
   //Show Modal
   const handleClose = () => setShow(false);
@@ -42,13 +41,23 @@ const CreatePost = (props) => {
         handleClose();
         setForm({ body: "", author: "" });
         // toast
-        setToaster({show: true, type: "success", title: "Success", message: "Post created!"})
+        setToaster({
+          show: true,
+          type: "success",
+          title: "Success",
+          message: "Post created!",
+        });
         refresh();
-        console.log("Post creation successful")
+        console.log("Post creation successful");
       })
       .catch((error) => {
         console.log(error);
-        setToaster({show: true, type: "danger", title: "Error", message: "Failed to create post."})
+        setToaster({
+          show: true,
+          type: "danger",
+          title: "Error",
+          message: "Failed to create post.",
+        });
       });
   };
 
@@ -60,6 +69,7 @@ const CreatePost = (props) => {
           type="text"
           placeholder="Write a post"
           onClick={handleShow}
+          data-testid="show-modal-form"
         />
       </Form.Group>
 
@@ -69,7 +79,12 @@ const CreatePost = (props) => {
           <Modal.Title>Create Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            data-testid="create-post-form"
+          >
             <Form.Group>
               <Form.Control
                 name="body"
@@ -82,12 +97,18 @@ const CreatePost = (props) => {
                 }
                 as="textarea"
                 rows={3}
+                data-testid="post-body-field"
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            disabled={!form.body}
+            data-testid="create-post-submit"
+          >
             Post
           </Button>
         </Modal.Footer>

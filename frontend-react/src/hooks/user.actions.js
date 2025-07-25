@@ -68,4 +68,16 @@ function getRefreshToken() {
   return auth ? auth.refresh : null;
 }
 
-export { useUserActions, getUser, getAccessToken, getRefreshToken };
+// Set the access, token and user property
+function setUserData(data) {
+  localStorage.setItem(
+    "auth",
+    JSON.stringify({
+      access: data.access,
+      refresh: data.refresh,
+      user: data.user,
+    })
+  );
+}
+
+export { useUserActions, getUser, getAccessToken, getRefreshToken, setUserData };

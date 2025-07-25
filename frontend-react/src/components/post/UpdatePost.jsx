@@ -32,26 +32,38 @@ const UpdatePost = (props) => {
       .then((res) => {
         console.log("response from backend: ", res);
         console.log("Post updated. Post id: ", post.id);
-        setToaster({show:true, type:"success", title:"Success", message:"Post modified!"})
+        setToaster({
+          show: true,
+          type: "success",
+          title: "Success",
+          message: "Post modified!",
+        });
         handleClose();
         refresh();
       })
       .catch((error) => {
         console.log(error);
-        setToaster({show:true, type:"danger", title:"Error", message:"Failed tp modify post."})
+        setToaster({
+          show: true,
+          type: "danger",
+          title: "Error",
+          message: "Failed tp modify post.",
+        });
       });
   };
 
   return (
     <div>
-      <Dropdown.Item onClick={handleShow}>Modify</Dropdown.Item>
+      <Dropdown.Item onClick={handleShow} data-testid="show-modal-form">
+        Modify
+      </Dropdown.Item>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={handleSubmit} data-testid="update-post-form">
             <Form.Group>
               <Form.Control
                 name="body"
@@ -64,12 +76,17 @@ const UpdatePost = (props) => {
                 }
                 as="textarea"
                 rows={3}
+                data-testid="post-body-field"
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            data-testid="update-post-submit"
+          >
             Save Changes
           </Button>
         </Modal.Footer>

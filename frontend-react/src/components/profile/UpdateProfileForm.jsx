@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import axiosService from "../helper/axios";
-import { Context } from "../components/Layout";
 import { useNavigate } from "react-router-dom";
+import axiosService from "../../helper/axios";
+import { Context } from "../Layout";
 
 const UpdateProfileForm = (props) => {
   const { profileUser, refresh } = props;

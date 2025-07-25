@@ -1,7 +1,7 @@
 import React from "react";
-import RegistrationForm from "../forms/RegistrationForm";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import RegistrationForm from "../components/authentication/RegistrationForm";
 
 const Registration = () => {
   return (

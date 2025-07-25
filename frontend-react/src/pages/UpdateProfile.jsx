@@ -1,11 +1,8 @@
 import React from "react";
 import Layout from "../components/Layout";
-import UpdateProfileForm from "../forms/UpdateProfileForm";
 import { Navigate, useParams } from "react-router-dom";
-import useSWR from "swr";
-import { fetcher } from "../helper/axios";
-import { getUser } from "../hooks/user.actions";
 import { useLoggedInUserSWR, useUserSWR } from "../helper/getUser";
+import UpdateProfileForm from "../components/profile/UpdateProfileForm";
 
 const UpdateProfile = () => {
   const { userId } = useParams();
