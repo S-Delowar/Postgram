@@ -1,7 +1,5 @@
 # Postgram – A Modern Social Media Platform
 
-![Postgram Logo](https://via.placeholder.com/150) <!-- Replace with your logo -->
-
 **Postgram** is a **full-stack social media platform** built with **React.js (Vite)** for the frontend and **Django REST Framework (DRF)** for the backend. It allows users to share posts, comment, like, and engage with a community in real-time.
 
 ---
