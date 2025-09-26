@@ -119,8 +119,7 @@ npm run dev
 
 - **Backend**: http://localhost:8000
 - **Frontend**: http://localhost:5173
-- **API Docs** (Swagger): http://localhost:8000/api/schema/swagger/
-- **API Docs** (Redoc): http://localhost:8000/api/schema/redoc/
+- **Admin Panel**: http://localhost:8000/admin
 
 ### 🧪 Testing
 **Frontend**
@@ -132,3 +131,16 @@ npm run test
 ```bash
 docker-compose exec web pytest
 ```
+
+ ### API Documentation
+
+The API is documented using DRF Spectacular.
+Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at http://localhost:8000/api/schema/redoc/
+
+## API Endpoints
+
+
+## Deployment
+ec2, github actions,  s3(for react)
+
+## Frontend
