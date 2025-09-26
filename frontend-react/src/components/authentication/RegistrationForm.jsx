@@ -19,12 +19,10 @@ const RegistrationForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const registrationForm = event.currentTarget;
-
     if (registrationForm.checkValidity() === false) {
       event.stopPropagation();
     }
     setValidated(true);
-
     const data = {
       username: form.username,
       email: form.email,
@@ -33,7 +31,6 @@ const RegistrationForm = () => {
       last_name: form.last_name,
       avatar: form.avatar,
     };
-
     axiosService
       .post("/auth/register/", data, {
         headers: {
@@ -41,7 +38,6 @@ const RegistrationForm = () => {
         },
       })
       .then((res) => {
-        console.log("success", res);
         localStorage.setItem(
           "auth",
           JSON.stringify({
@@ -54,7 +50,6 @@ const RegistrationForm = () => {
       })
       .catch((err) => {
         if (err.message) {
-          console.log("Error occurs", error);
           setError(err.request.response);
         }
       });
@@ -62,10 +57,9 @@ const RegistrationForm = () => {
 
   return (
     <div>
-      <h2>Register here</h2>
+      <h2 className="mb-4">Register here</h2>
       <Form
         id="registration-form"
-        className="border p-4 rounded"
         noValidate
         validated={validated}
         onSubmit={handleSubmit}
@@ -151,12 +145,8 @@ const RegistrationForm = () => {
             Please provide a valid Password
           </Form.Control.Feedback>
         </Form.Group>
-
-        <div className="text-content text-danger">
-          {error && <p>{error}</p>}
-        </div>
-
-        <Button variant="primary" type="submit">
+        {error && <div className="text-danger mb-3">{error}</div>}
+        <Button variant="primary" type="submit" className="w-100">
           Submit
         </Button>
       </Form>

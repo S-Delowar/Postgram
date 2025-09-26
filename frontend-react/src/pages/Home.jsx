@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import CreatePost from "../components/post/CreatePost";
 import { Col, Image, Row, Spinner } from "react-bootstrap";
 import { randomAvatar } from "../helper/utils";
-import { getUser } from "../hooks/user.actions";
 import useSWR from "swr";
 import { fetcher } from "../helper/axios";
 import Post from "../components/post/Post";

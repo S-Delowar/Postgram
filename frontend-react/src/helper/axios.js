@@ -6,7 +6,7 @@ import {
   getUser,
 } from "../hooks/user.actions";
 
-const baseURL = "http://localhost:8000/api";
+const baseURL = "http://localhost:8080/api";
 
 const axiosService = axios.create({
   baseURL: baseURL,

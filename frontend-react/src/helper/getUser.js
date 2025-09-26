@@ -12,7 +12,6 @@ export function useUserSWR(id) {
   }
 }
 
-
 export function useLoggedInUserSWR() {
   const { data, error, isLoading, mutate } = useSWR(`/user/me`, fetcher)
  

@@ -8,7 +8,6 @@ import { Col, Image, Row } from "react-bootstrap";
 import CreateComment from "../components/comments/CreateComment";
 import Comment from "../components/comments/Comment";
 import { randomAvatar } from "../helper/utils";
-import { getUser } from "../hooks/user.actions";
 import { getAvatarURL } from "../helper/avatar";
 
 const SinglePost = () => {

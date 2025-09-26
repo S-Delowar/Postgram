@@ -10,13 +10,13 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*z5-z%tpa^97&v%%^!r0ummki-q9aohh+8j&f0gd@4pt%+!&%l'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", default='django-insecure-*z5-z%tpa^97&v%%^!r0ummki-q9aohh+8j&f0gd@4pt%+!&%l')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
 # Application definition
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -74,8 +74,6 @@ WSGI_APPLICATION = 'CoreRoot.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -120,13 +118,9 @@ USE_TZ = True
 
 
 # # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# # Media files
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -161,38 +155,45 @@ SPECTACULAR_SETTINGS = {
 
 
 # CORS
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-]
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(',')
 
+# static and media files
+if os.getenv('USE_S3') == 'TRUE':
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.getenv('AWS_REGION')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_QUERYSTRING_AUTH = False
+    AWS_DEFAULT_ACL = None
+    
+    # Static and media URLs
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
-# Serving Static and Media Files with AWS S3 
-# AWS config
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.getenv('AWS_REGION')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_QUERYSTRING_AUTH = False
-AWS_DEFAULT_ACL = None
-
-# Static and media URLs
-# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-
-# # Set storage backends
-STORAGES = {
-    "default": {
-        "BACKEND": "CoreRoot.storage_backends.MediaStorage",
-    },
-    # "staticfiles": {
-    #     "BACKEND": "CoreRoot.storage_backends.StaticStorage",
-    # },
-    "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",  # WhiteNoise for static files
+    # # Set storage backends
+    STORAGES = {
+        "default": {
+            "BACKEND": "CoreRoot.storage_backends.MediaStorage",
         },
-}
+        "staticfiles": {
+            "BACKEND": "CoreRoot.storage_backends.StaticStorage",
+        }
+    }
+else:
+    # Media files
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    
+    # Static files (CSS, JavaScript, Images)
+    STATIC_URL = '/static/'
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-print(f"Bucket name: {AWS_STORAGE_BUCKET_NAME}")
-print(f"aes access key: {AWS_ACCESS_KEY_ID}")
+CSRF_TRUSTED_ORIGINS = [   # otherwise admin login throw error as POST request is sent
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://your-nginx-domain.com",
+    "https://your-nginx-domain.com",  # if HTTPS
+]

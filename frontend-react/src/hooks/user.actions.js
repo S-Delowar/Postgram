@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function useUserActions() {
   const navigate = useNavigate();
-  const baseURL = "http://localhost:8000/api";
+  const baseURL = "http://localhost:8080/api";
 
   // Login the user
   function login(data) {
