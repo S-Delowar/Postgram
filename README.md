@@ -22,6 +22,8 @@
 - ✅ **User & Post Management** – CRUD operations for users, posts, and comments.
 - ✅ **Nested Routing** – Comments under posts for RESTful structure.
 - ✅ **Permissions & Security** – Custom permissions for authors and admins.
+- ✅ **PostgreSQL Database** – Robust relational database for data storage.
+- ✅ **Django Admin Panel** – Built-in admin interface for easy data management.
 - ✅ **AWS S3 & Local Storage** – Configurable media storage.
 - ✅ **Dockerized Deployment** – Easy setup with **Docker, Dokcer-Compose & Nginx**.
 - ✅ **API Documentation** – Auto-generated **Swagger/OpenAPI** docs.
