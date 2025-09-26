@@ -120,6 +120,7 @@ npm run dev
 - **Backend**: http://localhost:8000
 - **Frontend**: http://localhost:5173
 - **API Docs** (Swagger): http://localhost:8000/api/schema/swagger/
+- **API Docs** (Redoc): http://localhost:8000/api/schema/redoc/
 
 ### 🧪 Testing
 **Frontend**
