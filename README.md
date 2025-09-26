@@ -137,7 +137,44 @@ docker-compose exec web pytest
 The API is documented using DRF Spectacular.
 Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at http://localhost:8000/api/schema/redoc/
 
-## API Endpoints
+### 📡 API Endpoints
+
+| **Endpoint**                     | **Method** | **Description**                          | **Authentication** | **Request Body** (if applicable)                     | **Response**                     |
+|----------------------------------|------------|------------------------------------------|--------------------|------------------------------------------------------|----------------------------------|
+| **Authentication**               |            |                                          |                    |                                                      |                                  |
+| `/api/auth/register/`            | POST       | Register a new user                     | None               | `email`, `username`, `first_name`, `last_name`, `avatar`, `password` | User data + JWT tokens           |
+| `/api/auth/login/`               | POST       | Login and get JWT tokens                | None               | `email`, `password`                                  | User data + JWT tokens           |
+| `/api/auth/refresh/`             | POST       | Refresh access token                     | None               | `refresh`                                           | New access token                 |
+| **Users**                        |            |                                          |                    |                                                      |                                  |
+| `/api/user/`                     | GET        | List all users (superuser only)         | JWT                | -                                                    | List of users                   |
+| `/api/user/me/`                  | GET        | Get current user profile                | JWT                | -                                                    | User profile data               |
+| `/api/user/{id}/`                | GET        | Get a user profile                      | JWT                | -                                                    | User profile data               |
+| `/api/user/{id}/`                | PATCH      | Update a user profile                   | JWT                | `username`, `first_name`, `last_name`, `email`, `avatar` | Updated user data               |
+| **Posts**                        |            |                                          |                    |                                                      |                                  |
+| `/api/post/`                     | GET        | List all posts                          | None               | -                                                    | List of posts                   |
+| `/api/post/`                     | POST       | Create a new post                       | JWT                | `body`                                               | Created post data               |
+| `/api/post/{id}/`                | GET        | Get a single post                       | None               | -                                                    | Post data                        |
+| `/api/post/{id}/`                | PUT        | Update a post                           | JWT                | `body`                                               | Updated post data               |
+| `/api/post/{id}/`                | PATCH      | Partially update a post                 | JWT                | `body`                                               | Updated post data               |
+| `/api/post/{id}/`                | DELETE     | Delete a post                           | JWT                | -                                                    | Success message                 |
+| `/api/post/{id}/like/`           | POST       | Like/unlike a post                      | JWT                | -                                                    | `status: liked/unliked`         |
+| `/api/post/{id}/comment/`        | POST       | Add a comment to a post                 | JWT                | `body`                                               | Created comment data            |
+| `/api/post/{id}/comments/`       | GET        | List all comments for a post            | None               | -                                                    | List of comments                |
+| `/api/post/by-author/{user_id}/` | GET        | List posts by a specific author         | None               | -                                                    | List of posts                   |
+| **Comments**                     |            |                                          |                    |                                                      |                                  |
+| `/api/comments/{id}/`            | GET        | Get a single comment                    | None               | -                                                    | Comment data                    |
+| `/api/comments/{id}/`            | PATCH      | Update a comment                        | JWT                | `body`                                               | Updated comment data            |
+| `/api/comments/{id}/`            | DELETE     | Delete a comment                        | JWT                | -                                                    | Success message                 |
+
+
+
+
+
+
+
+
+
+
 
 
 ## Deployment
