@@ -7,7 +7,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { randomAvatar } from "../helper/utils";
 import { useUserActions } from "../hooks/user.actions";
 import { Link } from "react-router-dom";
-import { getAvatarURL } from "../helper/avatar";
 import { useLoggedInUserSWR } from "../helper/getUser";
 
 const NavigationBar = () => {
@@ -19,7 +18,7 @@ const NavigationBar = () => {
   };
 
   console.log("Current User ",loggedInUser?.username);
-  console.log("Avatar url", getAvatarURL(loggedInUser?.avatar))
+  console.log("Avatar url", loggedInUser?.avatar)
 
   if (!loggedInUser) {
     return (<div>Loading</div>)
@@ -37,7 +36,7 @@ const NavigationBar = () => {
               <NavDropdown
                 title={
                   <Image
-                    src={loggedInUser.avatar? getAvatarURL(loggedInUser.avatar) : randomAvatar()}
+                    src={loggedInUser.avatar? loggedInUser.avatar : randomAvatar()}
                     roundedCircle
                     width={36}
                     height={36}

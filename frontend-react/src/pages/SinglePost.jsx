@@ -8,7 +8,6 @@ import { Col, Image, Row } from "react-bootstrap";
 import CreateComment from "../components/comments/CreateComment";
 import Comment from "../components/comments/Comment";
 import { randomAvatar } from "../helper/utils";
-import { getAvatarURL } from "../helper/avatar";
 
 const SinglePost = () => {
   const { postId } = useParams();
@@ -43,7 +42,7 @@ const SinglePost = () => {
               <Post post={post} refresh={mutatePost} isSinglePost></Post>
               <div className="d-flex align-items-center">
                 <Image
-                  src={getAvatarURL(loggedInUser.avatar) || randomAvatar()}
+                  src={loggedInUser.avatar || randomAvatar()}
                   width={48}
                   height={48}
                   roundedCircle

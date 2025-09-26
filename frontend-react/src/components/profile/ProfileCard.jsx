@@ -12,6 +12,10 @@ const ProfileCard = (props) => {
     navigate(`/user/${profileUser.id}/`);
   };
 
+  if (!profileUser) {
+    return null;
+  }
+
   console.log("Profile Card user: ", profileUser);
 
   return (
@@ -19,7 +23,7 @@ const ProfileCard = (props) => {
       <Card className="border-0 p-2" data-testid="profile-card">
         <div className="d-flex">
           <Image
-            src={profileUser.avatar || randomAvatar()}
+            src={profileUser.avatar? profileUser.avatar : randomAvatar()}
             roundedCircle
             width={48}
             height={48}

@@ -10,7 +10,6 @@ import { fetcher } from "../helper/axios";
 import Post from "../components/post/Post";
 import Toaster from "../components/Toaster";
 import ProfileCard from "../components/profile/ProfileCard";
-import { getAvatarURL } from "../helper/avatar";
 import { useLoggedInUserSWR } from "../helper/getUser";
 
 const Home = () => {
@@ -20,13 +19,10 @@ const Home = () => {
 
   const profiles = useSWR("/user/?limit=5", fetcher);
 
-  console.log(posts);
-  console.log("featured profiles: ", profiles.data?.results);
-
   const { loggedInUser, isLoading, isError} = useLoggedInUserSWR();
 
 
-  if (isLoading) {
+  if (isLoading || !profiles.data) {
     return (
       <>
       <div>Loading!</div>
@@ -41,6 +37,13 @@ const Home = () => {
     )
   }
 
+
+  
+  // console.log(posts);
+  console.log("LoggedIn user: ", loggedInUser);
+
+  console.log("featured profiles: ", profiles.data?.results);
+
   return (
     <div>
       <Layout>
@@ -49,7 +52,7 @@ const Home = () => {
             <Row className="align-items-center border rounded">
               <Col className="flex-shrink-1">
                 <Image
-                  src={getAvatarURL(loggedInUser.avatar) || randomAvatar()}
+                  src={loggedInUser.avatar || randomAvatar()}
                   roundedCircle
                   width={52}
                   height={52}
