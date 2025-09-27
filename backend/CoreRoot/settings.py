@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", default='django-insecure-*z5-z%tpa^9
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", default="*").split(",")
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,6 +85,13 @@ DATABASES = {
     }
 }
 
+print("====================================")
+print(f"DB Name: {os.getenv('DB_NAME')}")
+print(f"DB_USER: {os.getenv('DB_USER')}")
+print(f"DB_PASSWORD: {os.getenv('DB_PASSWORD')}")
+print(f"DB_HOST: {os.getenv('DB_HOST')}")
+print(f"DB_PORT: {os.getenv('DB_PORT')}")
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -117,14 +124,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# # Static files (CSS, JavaScript, Images)
-# STATIC_URL = '/static/'
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user setup
@@ -188,7 +188,12 @@ else:
     # Static files (CSS, JavaScript, Images)
     STATIC_URL = '/static/'
     STATIC_ROOT = BASE_DIR / 'staticfiles'
-    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    try:
+        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+        print("********************************")
+        print("whitenoise as storage")
+    except Exception as e:
+        print("Whitenoise not working")
 
 
 CSRF_TRUSTED_ORIGINS = [   # otherwise admin login throw error as POST request is sent
