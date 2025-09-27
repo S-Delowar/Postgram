@@ -175,9 +175,11 @@ Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at h
 ---
 
 ## 🖥️ Frontend View
-<img src="https://github.com/user-attachments/assets/176bf109-a684-4b56-9961-33b0a99bcb6f" alt="UI"/>
+<img src="https://github.com/user-attachments/assets/1cb77cc7-ddd8-4320-a76e-b162dd39e622" alt="UI"/>
 
 ---
 
+<!-- 
 ## Deployment
 ec2, github actions,  s3(for react)
+-->
