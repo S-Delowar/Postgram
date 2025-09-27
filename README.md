@@ -135,7 +135,9 @@ npm run test
 docker-compose exec web pytest
 ```
 
- ### API Documentation
+---
+
+ ### ⚙️ API Documentation
 
 The API is documented using DRF Spectacular.
 Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at http://localhost:8000/api/schema/redoc/
@@ -170,17 +172,12 @@ Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at h
 | `/api/comments/{id}/`            | DELETE     | Delete a comment                        | JWT                | -                                                    | Success message                 |
 
 
+---
 
+## 🖥️ Frontend View
+<img src="https://github.com/user-attachments/assets/176bf109-a684-4b56-9961-33b0a99bcb6f" alt="UI"/>
 
-
-
-
-
-
-
-
+---
 
 ## Deployment
 ec2, github actions,  s3(for react)
-
-## Frontend
