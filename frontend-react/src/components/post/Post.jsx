@@ -16,7 +16,6 @@ import { Context } from "../Layout";
 import CommentButton from "../comments/CommentButton";
 import { useLoggedInUserSWR } from "../../helper/getUser";
 
-
 const Post = (props) => {
   const { post, refresh, isSinglePost, onProfileDetailsPage } = props;
 
@@ -29,7 +28,12 @@ const Post = (props) => {
       .delete(`/post/${post.id}/`)
       .then(() => {
         console.log("Post deleted, post id:", post.id);
-        setToaster({show:true, type: "danger", title: "Success", message: "Post deleted!"})
+        setToaster({
+          show: true,
+          type: "danger",
+          title: "Success",
+          message: "Post deleted!",
+        });
         refresh();
       })
       .catch((err) => {
@@ -49,23 +53,23 @@ const Post = (props) => {
       });
   };
 
-console.log("post author avatar in post component: ", post.author.avatar)
+  console.log("post author avatar in post component: ", post.author.avatar);
 
-if (isLoading) {
+  if (isLoading) {
     return (
-       <>
-       <p>Loading profile...</p>
-       <Spinner />
-       </>
+      <>
+        <p>Loading profile...</p>
+        <Spinner />
+      </>
     );
   }
 
   if (isError) {
     return (
       <>
-      <p>Error! Profile not loaded.</p>
+        <p>Error! Profile not loaded.</p>
       </>
-    )
+    );
   }
 
   return (
@@ -83,13 +87,14 @@ if (isLoading) {
                 className="me-3"
               />
               <div>
-                  {
-                    !onProfileDetailsPage &&
-                  <Link to={`/user/${post.author.id}/`}><h6 className="mb-0">{post.author.username}</h6></Link>                
-                  }
-                  {
-                    onProfileDetailsPage && <h6 className="mb-0">{post.author.username}</h6>
-                  }
+                {!onProfileDetailsPage && (
+                  <Link to={`/user/${post.author.id}/`}>
+                    <h6 className="mb-0">{post.author.username}</h6>
+                  </Link>
+                )}
+                {onProfileDetailsPage && (
+                  <h6 className="mb-0">{post.author.username}</h6>
+                )}
                 <small className="text-muted">{format(post.created)}</small>
               </div>
             </div>
@@ -100,10 +105,7 @@ if (isLoading) {
                   <MoreOutlined style={{ fontSize: "20px" }} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <UpdatePost
-                    post={post}
-                    refresh={refresh}
-                  />
+                  <UpdatePost post={post} refresh={refresh} />
                   <Dropdown.Item onClick={handleDelete} className="text-danger">
                     Delete
                   </Dropdown.Item>
@@ -113,7 +115,30 @@ if (isLoading) {
           </div>
 
           {/* Post Body */}
-          <Card.Text className="fs-6">{post.body}</Card.Text>
+          {!isSinglePost ? (
+            <Card.Text className="fs-6">
+              {post.body.length > 150 ? (
+                <>
+                  {post.body.slice(0, 150) + "..."}
+                  <div className="mb-2">
+                    <Link to={`/post/${post.id}/`}>
+                      <Button
+                        variant="link"
+                        size="sm"
+                        className="p-0 text-primary"
+                      >
+                        Read more
+                      </Button>
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                post.body
+              )}
+            </Card.Text>
+          ) : (
+            <Card.Text className="fs-6">{post.body}</Card.Text>
+          )}
 
           <div className="d-flex justify-content-between">
             <div className="d-flex">
@@ -137,8 +162,8 @@ if (isLoading) {
               {!isSinglePost && (
                 <p>
                   <small>
-                    <Link to={`/post/${post.id}/`}>
-                      {post.comments_count} comment  
+                    <Link to={`/post/${post.id}/`} className="text-decoration-none text-reset">
+                      {post.comments_count} Comment
                     </Link>
                   </small>
                 </p>
@@ -170,9 +195,7 @@ if (isLoading) {
             </Button>
           </div>
           <div>
-            {!isSinglePost && (
-              <CommentButton post={post} refresh={refresh} />
-            )}
+            {!isSinglePost && <CommentButton post={post} refresh={refresh} />}
           </div>
         </Card.Footer>
       </Card>
