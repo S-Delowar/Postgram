@@ -202,3 +202,6 @@ CSRF_TRUSTED_ORIGINS = [   # otherwise admin login throw error as POST request i
     "http://your-nginx-domain.com",
     "https://your-nginx-domain.com",  # if HTTPS
 ]
+
+# OpenAI API Key for AI integration
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
