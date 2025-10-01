@@ -97,10 +97,12 @@ AWS_REGION=your-region
 ### 3. Run the Backend
 **Option-1**: with Virtual environment
 ```bash
+cd backend
 python -m venv .venv
 .venv\Scripts\activate.bat
 pip install -r requirements.txt
 python manage.py migrate
+python manage.py collectstatic --noinput
 python manage.py runserver
 ```
 
@@ -120,6 +122,7 @@ npm run dev
 - **Backend**: http://localhost:8000
 - **Frontend**: http://localhost:5173
 - **Admin Panel**: http://localhost:8000/admin
+- **Backend With Nginx**: http://localhost:8080
 
 ### 🧪 Testing
 **Frontend**
@@ -132,7 +135,9 @@ npm run test
 docker-compose exec web pytest
 ```
 
- ### API Documentation
+---
+
+ ### ⚙️ API Documentation
 
 The API is documented using DRF Spectacular.
 Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at http://localhost:8000/api/schema/redoc/
@@ -167,17 +172,14 @@ Access the Swagger UI at http://localhost:8000/api/schema/swagger/ or ReDoc at h
 | `/api/comments/{id}/`            | DELETE     | Delete a comment                        | JWT                | -                                                    | Success message                 |
 
 
+---
 
+## 🖥️ Frontend View
+<img src="https://github.com/user-attachments/assets/1cb77cc7-ddd8-4320-a76e-b162dd39e622" alt="UI"/>
 
+---
 
-
-
-
-
-
-
-
+<!-- 
 ## Deployment
 ec2, github actions,  s3(for react)
-
-## Frontend
+-->
