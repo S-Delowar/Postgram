@@ -33,9 +33,9 @@ jobs:
           SUPERUSER_USERNAME: dummy
           SUPERUSER_EMAIL: dummy
           SUPERUSER_PASSWORD: dummy
-          DB_NAME: testdb
-          DB_USER: testuser
-          DB_PASSWORD: testpass
+          DB_NAME: postgres
+          DB_USER: postgres
+          DB_PASSWORD: postgres
           DB_HOST: localhost
           DB_PORT: 5432
           ALLOWED_HOSTS: localhost
