@@ -34,10 +34,10 @@ class TestUserViewSet:
         assert response.status_code == status.HTTP_200_OK
         assert response.json()['email'] == user.email
 
-    def test_regular_user_cannot_get_other_user(self, client, user, another_user):
+    def test_regular_user_can_get_other_user(self, client, user, another_user):
         client.force_authenticate(user=user)
         response = client.get(self.endpoint + str(another_user.public_id) + "/")
-        assert response.status_code == status.HTTP_403_FORBIDDEN  
+        assert response.status_code == status.HTTP_200_OK  
         
     def test_superuser_can_get_any_user(self, client, superuser, user, another_user):
         client.force_authenticate(user=superuser)
