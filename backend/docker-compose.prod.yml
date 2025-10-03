@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: postgram-api
+    image: ${DOCKER_USERNAME}/postgram-api:latest
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env  
+  
+  nginx:
+    container_name: postgram-nginx
+    restart: always
+    image: nginx:latest
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - web

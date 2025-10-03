@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   web:
-    container_name: postman-api
+    container_name: postgram-api
     image: postman-api-drf:latest
     build: .
     depends_on:
@@ -14,10 +14,9 @@ services:
     volumes:
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-
   
   db:
-    container_name: postman-db
+    container_name: postgram-db
     image: postgres:16
     restart: always
     ports:
@@ -29,9 +28,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
-  
   nginx:
-    container_name: postman_nginx
+    container_name: postgram-nginx
     restart: always
     image: nginx:latest
     volumes:
@@ -42,7 +40,6 @@ services:
       - "8080:8080"
     depends_on:
       - web
-
 
 volumes:
   postgres_data:
